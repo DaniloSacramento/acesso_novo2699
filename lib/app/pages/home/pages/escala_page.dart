@@ -39,7 +39,11 @@ class _MyAppState extends State<MyApp> {
     // Adiciona pontos e traço ao CPF
     return "${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9)}";
   }
-
+  Future<void> _handleRefresh() async {
+  await _getUser(); // Atualiza os dados do usuário
+  setState(() {}); // Atualiza o estado para refletir as mudanças
+}
+final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   UserPromote? user;
   _getUser() async {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -139,73 +143,77 @@ class _MyAppState extends State<MyApp> {
             height: 62,
           ),
         ),
-        body: Container(
-          color: Colors.white,
-          child: CustomPaint(
-            painter: TrianguloPainter(),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 400,
-                    width: 950,
-                    child: Image.asset('assets/Captura de tela 2023-09-19 195450.png'),
-                  ),
-                  Text(
-                    'Não há escalas disponíveis',
-                    style: GoogleFonts.dosis(
-                      textStyle: TextStyle(
-                        fontSize: 28,
-                        color: darkBlueColor,
-                        fontWeight: FontWeight.bold,
+        body: RefreshIndicator(
+        onRefresh:_handleRefresh ,
+        key: _refreshIndicatorKey,
+          child: Container(
+            color: Colors.white,
+            child: CustomPaint(
+              painter: TrianguloPainter(),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 400,
+                      width: 950,
+                      child: Image.asset('assets/Captura de tela 2023-09-19 195450.png'),
+                    ),
+                    Text(
+                      'Não há escalas disponíveis',
+                      style: GoogleFonts.dosis(
+                        textStyle: TextStyle(
+                          fontSize: 28,
+                          color: darkBlueColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                     height: telaHeight * 0.01,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: yellowColor,
-                          minimumSize: const Size(double.infinity, 50),
-                        ),
-                        onPressed: _isLoading
-                            ? null
-                            : () async {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                _getUser();
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                              },
-                        child: _isLoading
-                            ? const CircularProgressIndicator() // Exibe o indicador de progresso.
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.refresh,
-                                  ),
-                                  Text(
-                                    'Atualizar',
-                                    style: GoogleFonts.dosis(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                       height: telaHeight * 0.01,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: yellowColor,
+                            minimumSize: const Size(double.infinity, 50),
+                          ),
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  _getUser();
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                },
+                          child: _isLoading
+                              ? const CircularProgressIndicator() // Exibe o indicador de progresso.
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.refresh,
+                                    ),
+                                    Text(
+                                      'Atualizar',
+                                      style: GoogleFonts.dosis(
+                                        textStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
-                  ),
-                ],
+                                  ],
+                                )),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -290,203 +298,207 @@ class _MyAppState extends State<MyApp> {
           height: 62,
         ),
       ),
-      body: CustomPaint(
-        painter: TrianguloPainter(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                'Olá, $primeiroNome',
-                style: GoogleFonts.dosis(
-                  textStyle: TextStyle(fontSize: 26, color: darkBlueColor, fontWeight: FontWeight.bold),
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+    onRefresh: _handleRefresh,
+        child: CustomPaint(
+          painter: TrianguloPainter(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  'Olá, $primeiroNome',
+                  style: GoogleFonts.dosis(
+                    textStyle: TextStyle(fontSize: 26, color: darkBlueColor, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    'Acompanhe o status da sua programação',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.dosis(
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.grey,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Text(
+                      'Acompanhe o status da sua programação',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.dosis(
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: yellowColor,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: yellowColor,
+                      ),
+                      onPressed: () {
+                        _getUser();
+                      },
+                      child: Icon(Icons.refresh),
                     ),
-                    onPressed: () {
-                      _getUser();
-                    },
-                    child: Icon(Icons.refresh),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: telaHeight * 0.04,
-            ),
-            if (escalas != null)
-              Expanded(
-                child: ListView.builder(
-                  primary: true,
-                  shrinkWrap: true,
-                  itemCount: escalas!.length,
-                  itemBuilder: (context, index) {
-                    EscalaPromotor escala = escalas![index];
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  escala.loja,
-                                  style: GoogleFonts.dosis(
-                                    textStyle: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: telaHeight * 0.04,
+              ),
+              if (escalas != null)
+                Expanded(
+                  child: ListView.builder(
+                    primary: true,
+                    shrinkWrap: true,
+                    itemCount: escalas!.length,
+                    itemBuilder: (context, index) {
+                      EscalaPromotor escala = escalas![index];
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    escala.loja,
+                                    style: GoogleFonts.dosis(
+                                      textStyle: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 22.0),
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Image.network(
-                                    escala.fornLogoMarca.toString(),
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container();
-                                    },
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 22.0),
+                                  child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Image.network(
+                                      escala.fornLogoMarca.toString(),
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container();
+                                      },
+                                    ),
                                   ),
                                 ),
+                              ],
+                            ),
+                            subtitle: Text(
+                              'Período: ${DateFormat('dd/MM').format(DateTime.parse(escala.dtInicio))} à ${DateFormat('dd/MM').format(
+                                DateTime.parse(escala.dtTermino),
+                              )}',
+                              style: GoogleFonts.dosis(
+                                textStyle: const TextStyle(fontSize: 18),
                               ),
-                            ],
-                          ),
-                          subtitle: Text(
-                            'Período: ${DateFormat('dd/MM').format(DateTime.parse(escala.dtInicio))} à ${DateFormat('dd/MM').format(
-                              DateTime.parse(escala.dtTermino),
-                            )}',
-                            style: GoogleFonts.dosis(
-                              textStyle: const TextStyle(fontSize: 18),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            elevation: 1.5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                primary: false,
-                                itemCount: escala.pontos.length,
-                                itemBuilder: (context, indexPonto) {
-                                  DateTime dtReferenciaTime = DateTime.parse(escala.pontos[indexPonto].dtReferencia);
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  DateFormat('dd/MM').format(
-                                                    DateTime.parse(escala.pontos[indexPonto].dtReferencia),
-                                                  ),
-                                                  style: GoogleFonts.dosis(textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 3),
-                                                  child: Text(
-                                                    '(${DateFormat('EEEE', 'pt-BR').format(dtReferenciaTime)})',
-                                                    style: GoogleFonts.dosis(textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: Row(
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              elevation: 1.5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: escala.pontos.length,
+                                  itemBuilder: (context, indexPonto) {
+                                    DateTime dtReferenciaTime = DateTime.parse(escala.pontos[indexPonto].dtReferencia);
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Row(
-                                              children: [
-                                                const Icon(Icons.history),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 5),
-                                                  child: Text(
-                                                    DateFormat('HH:mm').format(DateTime.parse(
-                                                        '${escala.pontos[indexPonto].dtReferencia} ${escala.pontos[indexPonto].hrCargaHoraria}')),
-                                                    style: GoogleFonts.dosis(textStyle: TextStyle(fontSize: fontSize)),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                             Padding(
-                                              padding: EdgeInsets.only(left: 0, top: 0),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
-                                                  
-                                                  Icon(
-                                                    Icons.pause,
-                                                    size: 20,
-                                                  ),
                                                   Text(
-                                              DateFormat('HH:mm')
-                                                  .format(DateTime.parse('${escala.pontos[indexPonto].dtReferencia} ${escala.pontos[indexPonto].hrIntervalo}')),
-                                              style: GoogleFonts.dosis(textStyle: TextStyle(fontSize: fontSize)),
-                                            ),
+                                                    DateFormat('dd/MM').format(
+                                                      DateTime.parse(escala.pontos[indexPonto].dtReferencia),
+                                                    ),
+                                                    style: GoogleFonts.dosis(textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 3),
+                                                    child: Text(
+                                                      '(${DateFormat('EEEE', 'pt-BR').format(dtReferenciaTime)})',
+                                                      style: GoogleFonts.dosis(textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                             ),
-                                            
                                           ],
                                         ),
-                                      ),
-                                      if (indexPonto < escala.pontos.length - 1)
-                                        const Divider(
-                                          color: Colors.black,
+                                        Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  const Icon(Icons.history),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 5),
+                                                    child: Text(
+                                                      DateFormat('HH:mm').format(DateTime.parse(
+                                                          '${escala.pontos[indexPonto].dtReferencia} ${escala.pontos[indexPonto].hrCargaHoraria}')),
+                                                      style: GoogleFonts.dosis(textStyle: TextStyle(fontSize: fontSize)),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                               Padding(
+                                                padding: EdgeInsets.only(left: 0, top: 0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    
+                                                    Icon(
+                                                      Icons.pause,
+                                                      size: 20,
+                                                    ),
+                                                    Text(
+                                                DateFormat('HH:mm')
+                                                    .format(DateTime.parse('${escala.pontos[indexPonto].dtReferencia} ${escala.pontos[indexPonto].hrIntervalo}')),
+                                                style: GoogleFonts.dosis(textStyle: TextStyle(fontSize: fontSize)),
+                                              ),
+                                                  ],
+                                                ),
+                                              ),
+                                              
+                                            ],
+                                          ),
                                         ),
-                                    ],
-                                  );
-                                },
+                                        if (indexPonto < escala.pontos.length - 1)
+                                          const Divider(
+                                            color: Colors.black,
+                                          ),
+                                      ],
+                                    );
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                ),
-              )
-            else
-              const Center(
-                child: CircularProgressIndicator(),
-              )
-          ],
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                )
+              else
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+            ],
+          ),
         ),
       ),
     );

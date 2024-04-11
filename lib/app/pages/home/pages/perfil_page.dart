@@ -97,7 +97,6 @@ class _PerfilPageState extends State<PerfilPage> {
         ),
       );
     }
-
     UserPromote user = this.user!;
     String cpfCuston = user.cpf;
     String telefoneC = user.telefone;
@@ -105,7 +104,6 @@ class _PerfilPageState extends State<PerfilPage> {
     String empresaC = user.empresa;
     String emailC = user.email;
     String statusC = user.status;
-
     return Scaffold(
       appBar: AppBar(
         actions: [

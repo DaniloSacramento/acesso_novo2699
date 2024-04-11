@@ -8,9 +8,7 @@ import 'package:acessonovo/app/widget/tringulo_pointer.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 enum LoginPageRota { login }
-
 extension InitialHomePageExt on InitialHomePage {
   // ignore: unrelated_type_equality_checks
   bool get isLogin => this == LoginPageRota.login;
@@ -301,8 +299,7 @@ class _LoginPageState extends State<LoginPage> {
                                           builder: (context) => TermoPage()),
                                       (r) => false,
                                     );
-                                  } else {
-                                                           
+                                  } else {                                            
                                     setState(() {
                                       errorMessage = deuCerto;
                                     });
