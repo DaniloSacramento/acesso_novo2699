@@ -81,14 +81,16 @@ class AlterarDadosSucesso extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(
-                              initialHomePage: InitialHomePage.escala,
-                            ),
-                          ),
-                        );
+                        Navigator.pop(context);
+                        Navigator.pop(context); 
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const HomePage(
+                        //       initialHomePage: InitialHomePage.escala,
+                        //     ),
+                        //   ),
+                        // );
                       },
                       child: Text(
                         'Voltar',

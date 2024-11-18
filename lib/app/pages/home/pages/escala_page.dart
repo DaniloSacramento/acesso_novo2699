@@ -39,14 +39,18 @@ class _MyAppState extends State<MyApp> {
     // Adiciona pontos e traço ao CPF
     return "${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9)}";
   }
+
   Future<void> _handleRefresh() async {
-  await _getUser(); // Atualiza os dados do usuário
-  setState(() {}); // Atualiza o estado para refletir as mudanças
-}
-final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+    await _getUser(); // Atualiza os dados do usuário
+    setState(() {}); // Atualiza o estado para refletir as mudanças
+  }
+
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   UserPromote? user;
   _getUser() async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     final result = sharedPreferences.getString('data');
     user = UserPromote.fromMap(jsonDecode(result!)['data']);
     escalas = await fetchEscalas(user!.email);
@@ -55,7 +59,6 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
 
   @override
   Widget build(BuildContext context) {
-    
     final screenWidth = MediaQuery.of(context).size.width;
     final fontSize = screenWidth * 0.040;
     final isLoading = this.user == null;
@@ -69,7 +72,7 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
     }
     UserPromote user = this.user!;
     if (escalas == null || escalas!.isEmpty) {
-       double telaHeight = MediaQuery.of(context).size.height;
+      double telaHeight = MediaQuery.of(context).size.height;
       return Scaffold(
         appBar: AppBar(
           actions: [
@@ -91,28 +94,27 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                           scrollable: true,
                           content: Column(
                             children: [
-                                  SizedBox(
-                          width: 200,
-                          height: 200,
-                          child: QrImageView(
-                            data: user!.cpf,
-                            version: QrVersions.auto,
-                            size: 200.00,
-                            backgroundColor: Colors.white,
-                          ),
-                        ),
-        
-                        Text(
-                          'QR Code gerado!',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.dosis(
-                            textStyle: const TextStyle(
-                                fontSize: 24, 
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                              SizedBox(
+                                width: 200,
+                                height: 200,
+                                child: QrImageView(
+                                  data: user!.cpf,
+                                  version: QrVersions.auto,
+                                  size: 200.00,
+                                  backgroundColor: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                'QR Code gerado!',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.dosis(
+                                  textStyle: const TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                               Text(
                                 "Apresente este QR\nCode para o fiscal na\n entrada da loja",
                                 textAlign: TextAlign.center,
@@ -144,8 +146,8 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
           ),
         ),
         body: RefreshIndicator(
-        onRefresh:_handleRefresh ,
-        key: _refreshIndicatorKey,
+          onRefresh: _handleRefresh,
+          key: _refreshIndicatorKey,
           child: Container(
             color: Colors.white,
             child: CustomPaint(
@@ -158,7 +160,8 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                     SizedBox(
                       height: 400,
                       width: 950,
-                      child: Image.asset('assets/Captura de tela 2023-09-19 195450.png'),
+                      child: Image.asset(
+                          'assets/Captura de tela 2023-09-19 195450.png'),
                     ),
                     Text(
                       'Não há escalas disponíveis',
@@ -171,7 +174,7 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                       ),
                     ),
                     SizedBox(
-                       height: telaHeight * 0.01,
+                      height: telaHeight * 0.01,
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -246,28 +249,27 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                         scrollable: true,
                         content: Column(
                           children: [
-                             SizedBox(
-                          width: 200,
-                          height: 200,
-                          child: QrImageView(
-                            data: user!.cpf,
-                            version: QrVersions.auto,
-                            size: 200.00,
-                            backgroundColor: Colors.white,
-                          ),
-                        ),
-        
-                        Text(
-                          'QR Code gerado!',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.dosis(
-                            textStyle: const TextStyle(
-                                fontSize: 24, 
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                            SizedBox(
+                              width: 200,
+                              height: 200,
+                              child: QrImageView(
+                                data: user!.cpf,
+                                version: QrVersions.auto,
+                                size: 200.00,
+                                backgroundColor: Colors.white,
+                              ),
                             ),
-                          ),
-                        ),
+                            Text(
+                              'QR Code gerado!',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.dosis(
+                                textStyle: const TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                             Text(
                               "Apresente este QR\nCode para o fiscal na\n entrada da loja",
                               textAlign: TextAlign.center,
@@ -300,7 +302,7 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
       ),
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
-    onRefresh: _handleRefresh,
+        onRefresh: _handleRefresh,
         child: CustomPaint(
           painter: TrianguloPainter(),
           child: Column(
@@ -314,7 +316,10 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                 child: Text(
                   'Olá, $primeiroNome',
                   style: GoogleFonts.dosis(
-                    textStyle: TextStyle(fontSize: 26, color: darkBlueColor, fontWeight: FontWeight.bold),
+                    textStyle: TextStyle(
+                        fontSize: 26,
+                        color: darkBlueColor,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -369,7 +374,9 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                                   child: Text(
                                     escala.loja,
                                     style: GoogleFonts.dosis(
-                                      textStyle: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                                      textStyle: const TextStyle(
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
@@ -380,7 +387,8 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                                     height: 50,
                                     child: Image.network(
                                       escala.fornLogoMarca.toString(),
-                                      errorBuilder: (context, error, stackTrace) {
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
                                         return Container();
                                       },
                                     ),
@@ -408,28 +416,48 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                                   primary: false,
                                   itemCount: escala.pontos.length,
                                   itemBuilder: (context, indexPonto) {
-                                    DateTime dtReferenciaTime = DateTime.parse(escala.pontos[indexPonto].dtReferencia);
+                                    DateTime dtReferenciaTime = DateTime.parse(
+                                        escala.pontos[indexPonto].dtReferencia);
                                     return Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Row(
                                                 children: [
                                                   Text(
                                                     DateFormat('dd/MM').format(
-                                                      DateTime.parse(escala.pontos[indexPonto].dtReferencia),
+                                                      DateTime.parse(escala
+                                                          .pontos[indexPonto]
+                                                          .dtReferencia),
                                                     ),
-                                                    style: GoogleFonts.dosis(textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                                                    style: GoogleFonts.dosis(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(left: 3),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 3),
                                                     child: Text(
                                                       '(${DateFormat('EEEE', 'pt-BR').format(dtReferenciaTime)})',
-                                                      style: GoogleFonts.dosis(textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                                                      style: GoogleFonts.dosis(
+                                                          textStyle:
+                                                              const TextStyle(
+                                                                  fontSize: 17,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
                                                     ),
                                                   )
                                                 ],
@@ -440,44 +468,56 @@ final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshI
                                         Padding(
                                           padding: const EdgeInsets.all(8),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
                                                   const Icon(Icons.history),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(left: 5),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5),
                                                     child: Text(
-                                                      DateFormat('HH:mm').format(DateTime.parse(
-                                                          '${escala.pontos[indexPonto].dtReferencia} ${escala.pontos[indexPonto].hrCargaHoraria}')),
-                                                      style: GoogleFonts.dosis(textStyle: TextStyle(fontSize: fontSize)),
+                                                      DateFormat('HH:mm').format(
+                                                          DateTime.parse(
+                                                              '${escala.pontos[indexPonto].dtReferencia} ${escala.pontos[indexPonto].hrCargaHoraria}')),
+                                                      style: GoogleFonts.dosis(
+                                                          textStyle: TextStyle(
+                                                              fontSize:
+                                                                  fontSize)),
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                               Padding(
-                                                padding: EdgeInsets.only(left: 0, top: 0),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 0, top: 0),
                                                 child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
                                                   children: [
-                                                    
                                                     Icon(
                                                       Icons.pause,
                                                       size: 20,
                                                     ),
                                                     Text(
-                                                DateFormat('HH:mm')
-                                                    .format(DateTime.parse('${escala.pontos[indexPonto].dtReferencia} ${escala.pontos[indexPonto].hrIntervalo}')),
-                                                style: GoogleFonts.dosis(textStyle: TextStyle(fontSize: fontSize)),
-                                              ),
+                                                      DateFormat('HH:mm').format(
+                                                          DateTime.parse(
+                                                              '${escala.pontos[indexPonto].dtReferencia} ${escala.pontos[indexPonto].hrIntervalo}')),
+                                                      style: GoogleFonts.dosis(
+                                                          textStyle: TextStyle(
+                                                              fontSize:
+                                                                  fontSize)),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
-                                              
                                             ],
                                           ),
                                         ),
-                                        if (indexPonto < escala.pontos.length - 1)
+                                        if (indexPonto <
+                                            escala.pontos.length - 1)
                                           const Divider(
                                             color: Colors.black,
                                           ),

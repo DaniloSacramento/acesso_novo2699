@@ -57,7 +57,8 @@ class _EmailSucessoState extends State<EmailSucesso> {
               SizedBox(
                 height: telaHeight * 0.35,
                 width: 200,
-                child: Image.network('http://acesso.novoatacarejo.com/resources/rede/img/novoImgBemVindo.jpg'),
+                child: Image.network(
+                    'http://acesso.novoatacarejo.com/resources/rede/img/novoImgBemVindo.jpg'),
               ),
               SizedBox(
                 height: telaHeight * 0.07,
@@ -108,7 +109,8 @@ class _EmailSucessoState extends State<EmailSucesso> {
                             setState(() {
                               isLoading = true;
                             });
-                            apiResponse = await VerificarEmailService().verificarEmail(
+                            apiResponse =
+                                await VerificarEmailService().verificarEmail(
                               email: widget.userEmail,
                             );
                             setState(() {
@@ -128,8 +130,8 @@ class _EmailSucessoState extends State<EmailSucesso> {
                             } else {
                               // ignore: use_build_context_synchronously
                               setState(() {
-                                          errorMessage = apiResponse!['errors'][0];
-                                        });
+                                errorMessage = apiResponse!['errors'][0];
+                              });
                             }
                           },
                     child: isLoading
@@ -144,19 +146,19 @@ class _EmailSucessoState extends State<EmailSucesso> {
                           ),
                   ),
                 ),
-              ), 
-                errorMessage != null
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                errorMessage!,
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            )
-                          : Container(),
+              ),
+              errorMessage != null
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        errorMessage!,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16,
+                        ),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),

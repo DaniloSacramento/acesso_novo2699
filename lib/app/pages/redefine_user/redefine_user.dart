@@ -38,17 +38,28 @@ class _RedefineUserState extends State<RedefineUser> {
   _RedefineUserState(this.update);
   // ignore: unused_element
   _getUser() async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     final result = sharedPreferences.getString('data');
 
-    setState(() {
-      user = UserPromote.fromMap(jsonDecode(result!)['data']);
-      if (user != null) {
-        _nomeController.text = user!.nome;
-        _dtNascimentoController.text = DateFormat.yMd('pt_BR').format(DateTime.parse(user!.dtNascimento));
-        _telefoneController.text = user!.telefone;
+    if (result != null) {
+      final decodedResult = jsonDecode(result);
+      if (decodedResult != null && decodedResult.containsKey('data')) {
+        setState(() {
+          user = UserPromote.fromMap(decodedResult['data']);
+          if (user != null) {
+            _nomeController.text = user!.nome;
+            _dtNascimentoController.text = DateFormat.yMd('pt_BR')
+                .format(DateTime.parse(user!.dtNascimento));
+            _telefoneController.text = user!.telefone;
+          }
+        });
+      } else {
+        print('Unexpected JSON structure: $decodedResult');
       }
-    });
+    } else {
+      print('No data found in SharedPreferences');
+    }
   }
 
   Future<void> _checkInternetConnection() async {
@@ -110,7 +121,8 @@ class _RedefineUserState extends State<RedefineUser> {
         imageFile = File(image.path);
 
         if (imageFile!.existsSync()) {
-          final compressedImageBytes = await FlutterImageCompress.compressWithFile(
+          final compressedImageBytes =
+              await FlutterImageCompress.compressWithFile(
             imageFile!.path,
             quality: 85,
           );
@@ -188,7 +200,10 @@ class _RedefineUserState extends State<RedefineUser> {
                     child: Text(
                       "Alterar dados cadastrais",
                       style: GoogleFonts.dosis(
-                        textStyle: TextStyle(fontSize: 24, color: darkBlueColor, fontWeight: FontWeight.bold),
+                        textStyle: TextStyle(
+                            fontSize: 24,
+                            color: darkBlueColor,
+                            fontWeight: FontWeight.bold),
                       ),
                     )),
                 Center(
@@ -204,10 +219,14 @@ class _RedefineUserState extends State<RedefineUser> {
                                 height: telaHeight * 0.25,
                                 child: imageBytes == null
                                     ? CachedNetworkImage(
-                                        imageUrl: user!.foto,
-                                        placeholder: (context, url) => const CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                                        imageBuilder: (context, imageProvider) => Container(
+                                        imageUrl: user?.foto ?? '',
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
@@ -238,7 +257,8 @@ class _RedefineUserState extends State<RedefineUser> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Colors.yellow[600], // Cor de fundo amarela
+                                  color: Colors
+                                      .yellow[600], // Cor de fundo amarela
                                 ),
                                 child: IconButton(
                                   onPressed: () async {
@@ -427,7 +447,8 @@ class _RedefineUserState extends State<RedefineUser> {
                               });
                               String? foto;
                               if (imageBytes != null) {
-                                foto = await AlterarFoto().fotoPromotor(email: user!.email, file: imageBytes!);
+                                foto = await AlterarFoto().fotoPromotor(
+                                    email: user!.email, file: imageBytes!);
                               }
 
                               setState(() {

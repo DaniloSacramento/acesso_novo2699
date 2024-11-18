@@ -12,11 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);
   @override
   State<ConfigPage> createState() => _ConfigPageState();
 }
+
 class _ConfigPageState extends State<ConfigPage> {
   UserPromote? user;
   List<EscalaPromotor>? escalas;
@@ -29,14 +31,16 @@ class _ConfigPageState extends State<ConfigPage> {
   }
 
   Future<void> _getUser() async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     final result = sharedPreferences.getString('data');
     user = UserPromote.fromMap(jsonDecode(result!)['data']);
     escalas = await fetchEscalas(user!.email);
     setState(() {});
   }
 
-  Future<void> _showDeleteAccountConfirmationDialog(BuildContext context) async {
+  Future<void> _showDeleteAccountConfirmationDialog(
+      BuildContext context) async {
     bool confirmDelete = false;
     bool isDeleteAccountChecked = false;
     String errorMessage = '';
@@ -136,9 +140,11 @@ class _ConfigPageState extends State<ConfigPage> {
                       ),
                     ),
                     onPressed: () async {
-                      bool deleted = await DeixarUserInativo().deixarUserInativo(email: user!.email);
+                      bool deleted = await DeixarUserInativo()
+                          .deixarUserInativo(email: user!.email);
                       if (deleted) {
-                        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                        SharedPreferences sharedPreferences =
+                            await SharedPreferences.getInstance();
                         await sharedPreferences.clear();
 
                         Navigator.pushReplacement(
@@ -149,7 +155,8 @@ class _ConfigPageState extends State<ConfigPage> {
                         );
                       } else {
                         setState(() {
-                          errorMessage = 'Erro ao excluir conta. Tente novamente!';
+                          errorMessage =
+                              'Erro ao excluir conta. Tente novamente!';
                         });
                       }
                     },
@@ -206,7 +213,7 @@ class _ConfigPageState extends State<ConfigPage> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop(); // Fecha o diálogo
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
@@ -242,7 +249,6 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     double telaHeight = MediaQuery.of(context).size.height;
-    
 
     return Scaffold(
       appBar: AppBar(
@@ -275,13 +281,12 @@ class _ConfigPageState extends State<ConfigPage> {
                             backgroundColor: Colors.white,
                           ),
                         ),
-        
                         Text(
                           'QR Code gerado!',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.dosis(
                             textStyle: const TextStyle(
-                                fontSize: 24, 
+                              fontSize: 24,
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
@@ -393,12 +398,16 @@ class _ConfigPageState extends State<ConfigPage> {
                       minimumSize: const Size(double.infinity, 50),
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const AlterarSenha()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AlterarSenha()));
                     },
                     child: Text(
                       'Alterar senha',
                       style: GoogleFonts.dosis(
-                        textStyle: const TextStyle(color: Colors.black, fontSize: 17),
+                        textStyle:
+                            const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ),
                   ),
@@ -411,12 +420,16 @@ class _ConfigPageState extends State<ConfigPage> {
                       minimumSize: const Size(double.infinity, 50),
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Diretrizes()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Diretrizes()));
                     },
                     child: Text(
                       'Diretrizes',
                       style: GoogleFonts.dosis(
-                        textStyle: const TextStyle(color: Colors.black, fontSize: 17),
+                        textStyle:
+                            const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ),
                   ),
@@ -434,7 +447,8 @@ class _ConfigPageState extends State<ConfigPage> {
                     child: Text(
                       'Excluir conta',
                       style: GoogleFonts.dosis(
-                        textStyle: const TextStyle(color: Colors.black, fontSize: 17),
+                        textStyle:
+                            const TextStyle(color: Colors.black, fontSize: 17),
                       ),
                     ),
                   ),

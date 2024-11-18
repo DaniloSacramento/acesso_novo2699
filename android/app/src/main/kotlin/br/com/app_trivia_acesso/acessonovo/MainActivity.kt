@@ -1,4 +1,4 @@
-package br.com.app_trivia_acesso.acessonovo
+package com.trivia.controledeacesso
 
 import io.flutter.embedding.android.FlutterActivity
 

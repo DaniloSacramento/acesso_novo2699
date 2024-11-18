@@ -33,7 +33,8 @@ Future<bool> redefineUser({required String nome, required String dtNascimento, r
           telefone: telefone,
           foto: foto,
           status: user.status,
-          empresa: user.empresa);
+          empresa: user.empresa, 
+          empresas: user.empresas,);
       var jsonData = newUser.toJson();
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('data', jsonData);

@@ -35,7 +35,7 @@ class _RegisterDataState extends State<RegisterData> {
   );
 
   var maskformaterCpf = MaskTextInputFormatter(
-    mask: '###.###.###.##',
+    mask: '###.###.###-##',
     type: MaskAutoCompletionType.lazy,
   );
   final TextEditingController nameInputController = TextEditingController();

@@ -20,7 +20,8 @@ class _InputScreenState extends State<InputScreen> {
   Widget build(BuildContext context) {
     double telaHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false, backgroundColor: darkBlueColor),
+      appBar: AppBar(
+          automaticallyImplyLeading: false, backgroundColor: darkBlueColor),
       body: Container(
         color: Colors.white,
         child: CustomPaint(
@@ -53,7 +54,8 @@ class _InputScreenState extends State<InputScreen> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: yellowColor,
-                            minimumSize: const Size(double.infinity, 50), // Largura total e altura mínima
+                            minimumSize: const Size(double.infinity,
+                                50), // Largura total e altura mínima
                           ),
                           onPressed: () {
                             Navigator.push(
@@ -77,7 +79,8 @@ class _InputScreenState extends State<InputScreen> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
-                            minimumSize: const Size(double.infinity, 50), // Largura total e altura mínima
+                            minimumSize: const Size(double.infinity,
+                                50), // Largura total e altura mínima
                           ),
                           onPressed: () async {
                             Navigator.push(
